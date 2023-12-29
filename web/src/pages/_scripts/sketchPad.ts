@@ -196,26 +196,31 @@ function next() {
     container.classList.add("invisible");
     instructions.innerText = "Thank you for participating!";
     advanceBtn.innerHTML = "Save";
-    advanceBtn.onclick = save;
+    save();
   }
 }
 
 function save() {
   advanceBtn.classList.add("invisible");
-  instructions.innerText =
-    "Take your downloaded file and place it in the 'drawings' folder in the root of this project";
 
-  const element = document.createElement("a");
-  element.setAttribute(
-    "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(data))
-  );
+  const body = JSON.stringify(data);
+  const url = "http://localhost:3000/post";
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body,
+  };
 
-  const fileName = `${data.student}-${data.session}.json`;
-  element.setAttribute("download", fileName);
-
-  element.style.display = "none";
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
+  fetch(url, options)
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res);
+      instructions.innerText = "Your drawing has been saved!";
+    })
+    .catch((err) => {
+      console.error(err);
+      instructions.innerText = "Something went wrong :(";
+    });
 }
