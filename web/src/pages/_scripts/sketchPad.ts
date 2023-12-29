@@ -120,10 +120,94 @@ class SketchPad {
       return [loc.clientX - rectangle.left, loc.clientY - rectangle.top];
     }
   }
+
+  reset() {
+    this.paths = [];
+    this.#redraw();
+  }
 }
 
-const container = document.querySelector<HTMLDivElement>("#sketchPadContainer");
+const container = document.querySelector<HTMLDivElement>(
+  "#sketchPadContainer"
+)!;
+let sketchpad: SketchPad = new SketchPad(container);
 
-if (container) {
-  new SketchPad(container);
+let index = 0;
+const labels = ["pikachu", "bulbasaur", "charmander", "squirtle", "mew"];
+
+type Data = {
+  student: string;
+  session: number;
+  drawings: {
+    label: string;
+    paths: NumberTuple[][];
+  }[];
+};
+
+const data: Data = {
+  student: "",
+  session: new Date().getTime(),
+  drawings: [],
+};
+
+const studentInput = document.querySelector<HTMLInputElement>("#student")!;
+const advanceBtn = document.querySelector<HTMLButtonElement>("#advanceBtn")!;
+const instructions = document.querySelector<HTMLSpanElement>("#intructions")!;
+
+advanceBtn.addEventListener("click", () => {
+  if (studentInput.value) {
+    data.student = studentInput.value;
+    studentInput.disabled = true;
+    advanceBtn.disabled = true;
+    start();
+  }
+});
+
+function start() {
+  if (!data.student) return alert("Please enter your name");
+  const sketchPadContainer = document.querySelector<HTMLDivElement>(
+    "#sketchPadContainer"
+  )!;
+  sketchPadContainer.classList.remove("invisible");
+  studentInput.classList.add("invisible");
+
+  const label = labels[index];
+  instructions.innerText = `Draw a ${label}`;
+  advanceBtn.innerText = "Next";
+  advanceBtn.onclick = next;
+  advanceBtn.disabled = false;
+}
+
+function next() {
+  if (sketchpad.paths.length === 0) return alert("Please draw something");
+
+  const draw = labels[index];
+  data.drawings.push({
+    label: draw,
+    paths: sketchpad.paths,
+  });
+  sketchpad.reset();
+
+  if (index + 1 < labels.length) {
+    index++;
+    const nextLabel = labels[index];
+    instructions.innerText = `Draw a ${nextLabel}`;
+  } else {
+    container.classList.add("invisible");
+    instructions.innerText = "Thank you for participating!";
+    advanceBtn.innerHTML = "Save";
+    advanceBtn.onclick = save;
+  }
+}
+
+function save() {
+  advanceBtn.classList.add("invisible");
+  instructions.innerText =
+    "Take your downloaded file and place it in the 'drawings' folder in the root of this project";
+
+  const element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(data))
+  );
 }
