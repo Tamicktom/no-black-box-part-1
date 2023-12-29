@@ -4,7 +4,7 @@ class SketchPad {
   canvas = document.createElement("canvas");
   ctx = this.canvas.getContext("2d")!;
   #isDrawing = false;
-  path: Path = [];
+  paths: NumberTuple[][] = [];
   constructor(container: HTMLElement, size = 512) {
     this.canvas.width = size;
     this.canvas.height = size;
@@ -15,23 +15,24 @@ class SketchPad {
     container.appendChild(this.canvas);
 
     this.#isDrawing = false;
-    this.path = [];
+    this.paths = [];
 
     this.#addEventListeners();
   }
 
   #addEventListeners() {
     this.canvas.addEventListener("mousedown", (e) => {
-      this.#isDrawing = true;
       const mouse = this.#getMousePosition(e);
-      this.path = [mouse];
+      this.paths.push([mouse]);
+      this.#isDrawing = true;
     });
 
     this.canvas.addEventListener("mousemove", (e) => {
       if (this.#isDrawing) {
         this.#isDrawing = true;
         const mouse = this.#getMousePosition(e);
-        this.path.push(mouse);
+        const lastPath: number[][] = this.paths[this.paths.length - 1];
+        lastPath.push(mouse);
         this.#redraw();
       }
     });
@@ -43,7 +44,7 @@ class SketchPad {
 
   #redraw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    draw.path(this.ctx, this.path);
+    draw.paths(this.ctx, this.paths);
   }
 
   #getMousePosition(e: MouseEvent): NumberTuple {
