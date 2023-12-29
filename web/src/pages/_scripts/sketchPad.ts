@@ -42,23 +42,27 @@ class SketchPad {
     });
 
     this.canvas.ontouchstart = (e) => {
-      const mouse = this.#getMousePosition(e);
-      this.paths.push([mouse]);
-      this.#isDrawing = true;
+      const loc = e.touches[0];
+      this.canvas.dispatchEvent(
+        new MouseEvent("mousedown", {
+          clientX: loc.clientX,
+          clientY: loc.clientY,
+        })
+      );
     };
 
     this.canvas.ontouchmove = (e) => {
-      if (this.#isDrawing) {
-        this.#isDrawing = true;
-        const mouse = this.#getMousePosition(e);
-        const lastPath: number[][] = this.paths[this.paths.length - 1];
-        lastPath.push(mouse);
-        this.#redraw();
-      }
+      const loc = e.touches[0];
+      this.canvas.dispatchEvent(
+        new MouseEvent("mousemove", {
+          clientX: loc.clientX,
+          clientY: loc.clientY,
+        })
+      );
     };
 
     this.canvas.ontouchend = () => {
-      this.#isDrawing = false;
+      this.canvas.dispatchEvent(new MouseEvent("mouseup", {}));
     };
   }
 
@@ -69,14 +73,11 @@ class SketchPad {
 
   #getMousePosition(e: MouseEvent | TouchEvent): NumberTuple {
     const rectangle = this.canvas.getBoundingClientRect();
-    if (e instanceof TouchEvent) {
-      const left = Math.round(e.touches[0].clientX - rectangle.left);
-      const top = Math.round(e.touches[0].clientY - rectangle.top);
-      return [left, top];
+    if (e instanceof MouseEvent) {
+      return [e.clientX - rectangle.left, e.clientY - rectangle.top];
     } else {
-      const left = Math.round(e.clientX - rectangle.left);
-      const top = Math.round(e.clientY - rectangle.top);
-      return [left, top];
+      const loc = e.touches[0];
+      return [loc.clientX - rectangle.left, loc.clientY - rectangle.top];
     }
   }
 }
