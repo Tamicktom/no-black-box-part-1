@@ -46,7 +46,7 @@ class SketchPad {
       }
     });
 
-    this.canvas.addEventListener("mouseup", () => {
+    document.addEventListener("mouseup", () => {
       this.#isDrawing = false;
     });
 
@@ -70,7 +70,7 @@ class SketchPad {
       );
     };
 
-    this.canvas.ontouchend = () => {
+    document.ontouchend = () => {
       this.canvas.dispatchEvent(new MouseEvent("mouseup", {}));
     };
 
