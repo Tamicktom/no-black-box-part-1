@@ -3,14 +3,22 @@
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Data Creator</title>
+  </head>
+  <body class="bg-gray-100 text-gray-900 font-sans">
+    <div
+      id="content"
+      class="w-full min-h-screen flex flex-col justify-center items-center"
+    >
+      <h1>Data Creator</h1>
+      <div id="sketchPadContainer"></div>
+    </div>
+
+    <script src="./_scripts/sketchPad.ts"></script>
+  </body>
 </html>
