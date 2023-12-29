@@ -210,4 +210,12 @@ function save() {
     "href",
     "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(data))
   );
+
+  const fileName = `${data.student}-${data.session}.json`;
+  element.setAttribute("download", fileName);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
 }
