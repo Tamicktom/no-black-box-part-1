@@ -5,13 +5,24 @@ const app = new Elysia().get("/", () => "Hello Elysia");
 
 app.use(cors());
 
+const dataSchema = t.Object({
+  student: t.String(),
+  session: t.Number(),
+  drawings: t.Array(
+    t.Object({
+      label: t.String(),
+      paths: t.Array(t.Array(t.Array(t.Number()))),
+    })
+  ),
+});
+
 //receave data on /post
 app.post(
   "/post",
   ({ body }) => {
     //save data to .json file
     const storage = "./dataset/";
-    const fileName = `${body.student}-${body.session}.json`;
+    const fileName = `data-${body.session}.json`;
     Bun.write(storage + fileName, JSON.stringify(body));
 
     return {
@@ -19,16 +30,7 @@ app.post(
     };
   },
   {
-    body: t.Object({
-      student: t.String(),
-      session: t.Number(),
-      drawings: t.Array(
-        t.Object({
-          label: t.String(),
-          paths: t.Array(t.Array(t.Array(t.Number()))),
-        })
-      ),
-    }),
+    body: dataSchema,
   }
 );
 

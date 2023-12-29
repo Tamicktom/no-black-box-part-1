@@ -40,6 +40,7 @@ server/build
 # misc
 server/.DS_Store
 server/*.pem
+server/dataset/*.json
 
 # debug
 server/npm-debug.log*
