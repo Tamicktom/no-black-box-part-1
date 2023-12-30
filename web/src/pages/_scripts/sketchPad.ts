@@ -204,7 +204,7 @@ function save() {
   advanceBtn.classList.add("invisible");
 
   const body = JSON.stringify(data);
-  const url = "http://localhost:3000/post";
+  const url = "http://192.168.100.10:3000/post";
   const options = {
     method: "POST",
     headers: {
