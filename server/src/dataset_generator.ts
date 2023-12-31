@@ -31,7 +31,7 @@ fileNames.map((fileName) => {
       });
 
       const url = constants.JSON_DIR + "/" + id + ".json";
-      fs.writeFileSync(url, JSON.stringify(drawings[label], null, 2));
+      fs.writeFileSync(url, JSON.stringify(drawings[label].paths, null, 2));
 
       id++;
     }
