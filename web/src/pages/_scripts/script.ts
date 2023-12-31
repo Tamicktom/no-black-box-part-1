@@ -89,8 +89,7 @@ function save() {
 
   fetch(url, options)
     .then((res) => res.json())
-    .then((res) => {
-      console.log(res);
+    .then(() => {
       instructions.innerText = "Your drawing has been saved!";
     })
     .catch((err) => {

@@ -25,13 +25,19 @@ fileNames.map((fileName) => {
     for (let label in drawings) {
       samples.push({
         id,
-        label,
+        label: drawings[label].label,
         student_name: student,
         student_id: session,
       });
+
+      fs.writeFileSync(
+        constants.JSON_DIR + "/" + id + ".json",
+        JSON.stringify(drawings[label], null, 2)
+      );
+
       id++;
     }
   }
 });
 
-fs.writeFileSync(constants.SAMPLES, JSON.stringify(samples));
+fs.writeFileSync(constants.SAMPLES, JSON.stringify(samples, null, 2));
