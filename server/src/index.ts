@@ -1,20 +1,13 @@
-import { Elysia, t } from "elysia";
+//* Libraries imports
+import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
+
+//* Local imports
+import { dataSchema } from "./schemas/raw";
 
 const app = new Elysia().get("/", () => "Hello Elysia");
 
 app.use(cors());
-
-const dataSchema = t.Object({
-  student: t.String(),
-  session: t.Number(),
-  drawings: t.Array(
-    t.Object({
-      label: t.String(),
-      paths: t.Array(t.Array(t.Array(t.Number()))),
-    })
-  ),
-});
 
 //receave data on /post
 app.post(
