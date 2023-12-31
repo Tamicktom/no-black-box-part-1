@@ -30,10 +30,8 @@ fileNames.map((fileName) => {
         student_id: session,
       });
 
-      fs.writeFileSync(
-        constants.JSON_DIR + "/" + id + ".json",
-        JSON.stringify(drawings[label], null, 2)
-      );
+      const url = constants.JSON_DIR + "/" + id + ".json";
+      fs.writeFileSync(url, JSON.stringify(drawings[label], null, 2));
 
       id++;
     }
