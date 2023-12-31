@@ -1,5 +1,4 @@
-import draw from "../../../../common/draw";
-import type { NumberTuple } from "../../../../@types/common";
+import draw from "./draw";
 export class SketchPad {
   canvas = document.createElement("canvas");
   ctx = this.canvas.getContext("2d")!;

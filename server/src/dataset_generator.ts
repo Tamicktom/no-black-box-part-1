@@ -34,17 +34,10 @@ fileNames.map((fileName) => {
 
       const url = constants.JSON_DIR + "/" + id + ".json";
       fs.writeFileSync(url, JSON.stringify(paths, null, 2));
-      generateImageFile(constants.IMG_DIR + "/" + id + ".png", paths);
 
       id++;
     }
   }
 });
-
-function generateImageFile(outFile: string, paths: [number, number][][]) {
-  draw.paths(ctx, paths);
-  const buffer = canvas.toBuffer("image/png");
-  fs.writeFileSync(outFile, buffer);
-}
 
 fs.writeFileSync(constants.SAMPLES, JSON.stringify(samples, null, 2));

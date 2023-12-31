@@ -1,5 +1,3 @@
-import type { DrawFunction, DrawFunctions } from "../@types/common";
-
 const draw: {
   path: DrawFunction;
   paths: DrawFunctions;

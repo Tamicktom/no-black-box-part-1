@@ -1,5 +1,4 @@
 import { SketchPad } from "./sketchPad";
-import type { NumberTuple } from "../../../../@types/common";
 
 const LABELS: string[] = ["circle", "square", "triangle", "heart", "star"];
 let index: number = 0;
