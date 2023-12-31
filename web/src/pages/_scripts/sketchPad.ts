@@ -1,4 +1,4 @@
-import draw from "./draw";
+import { draw } from "./draw";
 export class SketchPad {
   canvas = document.createElement("canvas");
   ctx = this.canvas.getContext("2d")!;

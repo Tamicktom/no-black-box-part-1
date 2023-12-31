@@ -1,4 +1,5 @@
 import { SketchPad } from "./sketchPad";
+import { generatePngFromPaths } from "./draw";
 
 const LABELS: string[] = ["circle", "square", "triangle", "heart", "star"];
 let index: number = 0;
@@ -16,12 +17,14 @@ type Data = {
     label: string;
     paths: NumberTuple[][];
   }[];
+  pngs: string[];
 };
 
 const data: Data = {
   student: "",
   session: new Date().getTime(),
   drawings: [],
+  pngs: [],
 };
 
 const studentInput = document.querySelector<HTMLInputElement>("#student")!;
@@ -56,33 +59,49 @@ function next() {
   if (sketchpad.paths.length === 0) return alert("Please draw something");
 
   const draw = LABELS[index];
-  data.drawings.push({
-    label: draw,
-    paths: sketchpad.paths,
-  });
-  sketchpad.reset();
+  generatePngFromPaths(sketchpad.paths).then((png) => {
+    data.drawings.push({
+      label: draw,
+      paths: sketchpad.paths,
+    });
+    data.pngs.push(png);
+    sketchpad.reset();
 
-  if (index + 1 < LABELS.length) {
-    index++;
-    const nextLabel = LABELS[index];
-    instructions.innerText = `Draw a ${nextLabel}`;
-  } else {
-    container.classList.add("invisible", "pointer-events-none", "hidden");
-    instructions.innerText = "Thank you for participating!";
-    advanceBtn.innerHTML = "Save";
-    save();
-  }
+    if (index + 1 < LABELS.length) {
+      index++;
+      const nextLabel = LABELS[index];
+      instructions.innerText = `Draw a ${nextLabel}`;
+    } else {
+      container.classList.add("invisible", "pointer-events-none", "hidden");
+      instructions.innerText = "Thank you for participating!";
+      advanceBtn.innerHTML = "Save";
+      save();
+    }
+  });
 }
 
 function save() {
   advanceBtn.classList.add("invisible");
 
-  const body = JSON.stringify(data);
+  const body = new FormData();
+
+  body.append("student", data.student);
+  body.append("session", data.session.toString());
+  body.append("drawings", JSON.stringify(data.drawings));
+  //convert pngs to files
+  const pngs = data.pngs.map((png, i) => {
+    const blob = fetch(png).then((res) => {
+      res.blob().then((blob) => {
+        
+      });
+    });
+  });
+
   const url = "http://192.168.100.10:3000/post";
   const options = {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "multipart/form-data",
     },
     body,
   };
