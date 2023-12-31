@@ -21,7 +21,7 @@ app.post(
   "/post",
   ({ body }) => {
     //save data to .json file
-    const storage = "./dataset/";
+    const storage = "./data/raw/";
     const fileName = `data-${body.session}.json`;
     Bun.write(storage + fileName, JSON.stringify(body));
 
