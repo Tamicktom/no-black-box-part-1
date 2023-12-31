@@ -8,7 +8,7 @@ export const dataSchema = t.Object({
   drawings: t.Array(
     t.Object({
       label: t.String(),
-      paths: t.Array(t.Array(t.Array(t.Number()))),
+      paths: t.Array(t.Array(t.Tuple([t.Number(), t.Number()]))),
     })
   ),
 });
@@ -19,7 +19,7 @@ export const dataSchemaZod = z.object({
   drawings: z.array(
     z.object({
       label: z.string(),
-      paths: z.array(z.array(z.array(z.number()))),
+      paths: z.array(z.array(z.tuple([z.number(), z.number()]))),
     })
   ),
 });
