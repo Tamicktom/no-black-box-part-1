@@ -13,29 +13,37 @@
     <meta name="generator" content={Astro.generator} />
     <title>Data Creator</title>
   </head>
-  <body class="bg-gray-100 text-gray-900 font-sans overscroll-none">
+  <body
+    class="bg-gray-100 text-gray-900 font-sans overscroll-none dark:bg-gray-900"
+  >
     <div
       id="content"
       class="w-full min-h-screen flex flex-col justify-center items-center"
     >
-      <h1>Data Creator</h1>
-      <div>
-        <input
-          type="text"
-          name="student"
-          id="student"
-          placeholder="Type your name"
-          class="border border-gray-400 rounded-md p-2"
-        />
-        <button
-          id="advanceBtn"
-          class="border border-gray-400 rounded-md p-2 hover:bg-gray-200 transition-all shadow-md"
-          >Start</button
-        >
-        <span id="intructions"></span>
+      <h1 class="text-4xl font-bold mb-4 dark:text-gray-100">Data Creator</h1>
+      <div class="w-full flex justify-center items-center flex-col">
+        <div class="flex justify-center items-center flex-row mb-4">
+          <input
+            type="text"
+            name="student"
+            id="student"
+            placeholder="Type your name"
+            class="border border-gray-400 rounded-md p-2 dark:bg-gray-800 dark:text-gray-100 outline-none"
+          />
+          <button
+            id="advanceBtn"
+            class="border border-gray-400 rounded-md p-2 hover:bg-gray-200 transition-all shadow-md dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+            >Start</button
+          >
+          <span
+            id="intructions"
+            class="text-sm text-gray-500 dark:text-gray-400"
+          >
+          </span>
+        </div>
+        <div id="sketchPadContainer" class="invisible"></div>
       </div>
-      <div id="sketchPadContainer" class="invisible"></div>
+      <script src="./_scripts/script.ts"></script>
     </div>
-    <script src="./_scripts/sketchPad.ts"></script>
   </body>
 </html>

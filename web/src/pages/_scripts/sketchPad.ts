@@ -1,6 +1,6 @@
 import draw from "./draw";
 
-class SketchPad {
+export class SketchPad {
   canvas = document.createElement("canvas");
   ctx = this.canvas.getContext("2d")!;
   #isDrawing = false;
@@ -95,6 +95,21 @@ class SketchPad {
       "disabled:shadow-none",
       "disabled:bg-gray-200",
       "disabled:hover:bg-gray-200",
+      "dark:bg-gray-700",
+      "dark:hover:bg-gray-600",
+      "dark:focus:ring-gray-400",
+      "dark:focus:ring-opacity-50",
+      "dark:focus:ring-2",
+      "dark:disabled:bg-gray-700",
+      "dark:disabled:hover:bg-gray-700",
+      "dark:disabled:shadow-none",
+      "dark:disabled:opacity-50",
+      "dark:disabled:cursor-not-allowed",
+      "dark:disabled:bg-gray-700",
+      "dark:disabled:hover:bg-gray-700",
+      "dark:disabled:focus:ring-gray-400",
+      "dark:disabled:focus:ring-opacity-50",
+      "dark:disabled:focus:ring-2",
       "transition-all",
       "duration-200"
     );
@@ -125,102 +140,4 @@ class SketchPad {
     this.paths = [];
     this.#redraw();
   }
-}
-
-const container = document.querySelector<HTMLDivElement>(
-  "#sketchPadContainer"
-)!;
-let sketchpad: SketchPad = new SketchPad(container);
-
-let index = 0;
-const labels = ["pikachu", "bulbasaur", "charmander", "squirtle", "mew"];
-
-type Data = {
-  student: string;
-  session: number;
-  drawings: {
-    label: string;
-    paths: NumberTuple[][];
-  }[];
-};
-
-const data: Data = {
-  student: "",
-  session: new Date().getTime(),
-  drawings: [],
-};
-
-const studentInput = document.querySelector<HTMLInputElement>("#student")!;
-const advanceBtn = document.querySelector<HTMLButtonElement>("#advanceBtn")!;
-const instructions = document.querySelector<HTMLSpanElement>("#intructions")!;
-
-advanceBtn.addEventListener("click", () => {
-  if (studentInput.value) {
-    data.student = studentInput.value;
-    studentInput.disabled = true;
-    advanceBtn.disabled = true;
-    start();
-  }
-});
-
-function start() {
-  if (!data.student) return alert("Please enter your name");
-  const sketchPadContainer = document.querySelector<HTMLDivElement>(
-    "#sketchPadContainer"
-  )!;
-  sketchPadContainer.classList.remove("invisible");
-  studentInput.classList.add("invisible");
-
-  const label = labels[index];
-  instructions.innerText = `Draw a ${label}`;
-  advanceBtn.innerText = "Next";
-  advanceBtn.onclick = next;
-  advanceBtn.disabled = false;
-}
-
-function next() {
-  if (sketchpad.paths.length === 0) return alert("Please draw something");
-
-  const draw = labels[index];
-  data.drawings.push({
-    label: draw,
-    paths: sketchpad.paths,
-  });
-  sketchpad.reset();
-
-  if (index + 1 < labels.length) {
-    index++;
-    const nextLabel = labels[index];
-    instructions.innerText = `Draw a ${nextLabel}`;
-  } else {
-    container.classList.add("invisible");
-    instructions.innerText = "Thank you for participating!";
-    advanceBtn.innerHTML = "Save";
-    save();
-  }
-}
-
-function save() {
-  advanceBtn.classList.add("invisible");
-
-  const body = JSON.stringify(data);
-  const url = "http://192.168.100.10:3000/post";
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body,
-  };
-
-  fetch(url, options)
-    .then((res) => res.json())
-    .then((res) => {
-      console.log(res);
-      instructions.innerText = "Your drawing has been saved!";
-    })
-    .catch((err) => {
-      console.error(err);
-      instructions.innerText = "Something went wrong :(";
-    });
 }
